@@ -2,7 +2,7 @@
 import { useState } from "react";
 import postData from "../../lib/postData";
 import findData from "../../lib/findData";
-import { signIn } from 'next-auth/react';
+import { signIn } from "next-auth/react";
 
 export default function SingupForm() {
     const [name, setName] = useState("");
@@ -10,18 +10,40 @@ export default function SingupForm() {
     const [password, setPassword] = useState("");
 
     async function handleClick() {
-        let providedKey = "email",
-            providedData = email;
-        let user = await findData({ providedKey, providedData });
-        console.log(`user: ${user}`);
-        console.log(`key: ${key}, providedData: ${email}`);
-        if (user) {
-            alert("Email already used. Choose other.");
-            console.log(`Exists: ${user}`);
-            return;
-        }
+        // let providedKey = "email",
+        //     providedData = email;
 
-        // alert(exists);
+        // let user = await findData({ providedKey, providedData });
+        // console.log(`user: ${user}`);
+        // console.log(`key: ${key}, providedData: ${email}`);
+        // if (user) {
+        //     alert("Email already used. Choose other.");
+        //     console.log(`Exists: ${user}`);
+        //     return;
+        // }
+
+        const res = await fetch("/api/findData", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ providedKey: "email", providedData: email }),
+        });
+
+        if (res.ok) {
+            const user = await res.json();
+            console.log(`User found: ${user}`);
+            // User exists, handle accordingly
+            alert("Email already used. Choose other.");
+            return;
+        } else if (res.status === 404) {
+            // User does not exist, proceed with account creation
+            // ... rest of your code for account creation ...
+        } else {
+            // Handle other errors
+            const error = await res.json();
+            alert(`Error: ${error.message}`);
+        }
 
         if (!name || !email || !password) {
             alert("Please fill in all fields.");
@@ -45,7 +67,7 @@ export default function SingupForm() {
             signIn("credentials", {
                 email,
                 password,
-                callbackUrl: "/", 
+                callbackUrl: "/",
                 redirect: false,
             }).then((result) => {
                 if (result.ok) {

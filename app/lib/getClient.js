@@ -7,9 +7,12 @@ export default async function getClient() {
     if (!process.env.MONGO_URI) {
         throw new Error("Please add your Mongo URI to .env.local");
     }
-    
-    const client = new MongoClient(uri, options);
-    
-    return client;
+
+    try {
+        const client = await new MongoClient(uri, options);
+        return client;
+    } catch {
+        throw new Error("Can't fetch client");
+    }
 }
 

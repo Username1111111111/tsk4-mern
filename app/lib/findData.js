@@ -11,7 +11,6 @@ export default async function findData({ providedKey, providedData }) {
         const database = await client.db(dbName);
         const collection = await database.collection(collectionName);
 
-        // const findQuery = { email: providedData, password: providedPassword };
         const findQuery = { [providedKey]: providedData };
 
         try {
@@ -27,9 +26,10 @@ export default async function findData({ providedKey, providedData }) {
             }
 
         } catch (err) {
-            console.error(
-                `Something wrong: ${err}\n`
-            );
+            throw new Error(`Something wrong: ${err}\n`);
+            // console.error(
+            //     `Something wrong: ${err}\n`
+            // );
         }
     } finally {
         await client.close();

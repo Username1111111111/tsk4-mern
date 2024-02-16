@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import findData from "../../../lib/findData";
-import updateTime from "../../../lib/updateTime";
+import findData from "../../lib/findData";
+import updateTime from "../../lib/updateTime";
 
 const authOptions = {
     providers: [

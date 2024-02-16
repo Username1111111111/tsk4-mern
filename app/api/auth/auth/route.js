@@ -92,6 +92,10 @@ const authOptions = {
     },
 };
 
-export const handler = NextAuth(authOptions);
+export default function authRoute(req, res) {
+    return NextAuth(req, res, authOptions);
+}
 
-export { handler as GET, handler as POST };
+// export default handler = NextAuth(authOptions);
+
+// export { handler as GET, handler as POST };

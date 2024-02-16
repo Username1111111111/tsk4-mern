@@ -1,7 +1,15 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import findData from "../../../lib/findData";
+// import findData from "../../../lib/findData";
 import updateTime from "../../../lib/updateTime";
+
+const NEXTAUTH_URL = process.env.NEXTAUTH_URL || "http://localhost:3000";
+
+export const config = {
+    api: {
+        bodyParser: true,
+    },
+};
 
 const handler = NextAuth({
     providers: [
@@ -22,24 +30,55 @@ const handler = NextAuth({
             },
             async authorize(credentials, req) {
                 const { email, password } = credentials;
+                
 
-                let providedKey = "email",
-                    providedData = email;
-                const findQuery = { providedKey, providedData };
-                const user =  await findData(findQuery);
-                console.log(user);
+                try {
+                    const res = await fetch(`${NEXTAUTH_URL}/api/findData`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            providedKey: "email",
+                            providedData: email,
+                        }),
+                    });
 
-                if (user) {
-                    if ((user.email === email, user.password === password)) {
-                        if (user.status === "blocked") {
-                            throw new Error("The user has been blocked");
+                    // console.log(res.body);
+
+                    if (res.ok) {
+                        const user = await res.json();
+                        console.log(`User found: ${user}`);
+
+                        if (
+                            user.email === email &&
+                            user.password === password
+                        ) {
+                            if (user.status === "blocked") {
+                                throw new Error("The user has been blocked");
+                            } else {
+                                return Promise.resolve({
+                                    _id: user._id,
+                                    email: user.email,
+                                    password: user.password,
+                                    status: user.status,
+                                });
+                            }
                         } else {
-                            return Promise.resolve({_id: user._id, email: user.email, password: user.password, status: user.status});
+                            throw new Error(
+                                `Email and password doesn't match: ${user.email} & ${user.password}`
+                            );
+                            // return Promise.resolve(null);
                         }
-                    } else {
+                    } else if (res.status === 404) {
+                        // console.error(
+                        //     "Server response was not ok",
+                        //     await res.json()
+                        // );
                         return Promise.resolve(null);
                     }
-                } else {
+                } catch (error) {
+                    console.error("Error parsing JSON:", error);
                     return Promise.resolve(null);
                 }
             },
@@ -47,9 +86,7 @@ const handler = NextAuth({
     ],
     callbacks: {
         async jwt({ token, user }) {
-            
             if (user) {
-                
                 token._id = user._id;
                 token.status = user.status;
                 token.email = user.email;
@@ -57,39 +94,36 @@ const handler = NextAuth({
             return token;
         },
         async session({ session, token }) {
-            
             session.user = {
                 _id: token._id,
                 status: token.status,
-                email: token.email
+                email: token.email,
             };
             return session;
         },
         async redirect({ url, baseUrl }) {
-            
             if (url.startsWith(baseUrl)) {
                 return url;
             }
-            
+
             return baseUrl;
         },
         async signIn({ user }) {
             if (user) {
-                
                 try {
                     await updateTime(user._id);
-                    return true; 
+                    return true;
                 } catch (error) {
                     console.error(`Error updating last login time: ${error}`);
-                    return false; 
+                    return false;
                 }
             }
-            return true; 
+            return true;
         },
     },
     pages: {
-        signOut: '/api/auth/signin',
+        signOut: `${NEXTAUTH_URL}/api/auth/signin`,
     },
 });
 
-export { handler as GET, handler as POST}
+export { handler as GET, handler as POST };

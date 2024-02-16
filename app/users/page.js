@@ -18,13 +18,6 @@ export default function Users() {
         loadUsers();
     }, []);
 
-    
-    // return (
-    //     <main style={{ backgroundColor: "#eee" }}>
-    //         <Table users={users} refreshUsers={loadUsers}></Table>
-    //     </main>
-    // );
-    
     if (session) {
         return (
             <main style={{ backgroundColor: "#eee" }}>

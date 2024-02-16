@@ -13,6 +13,7 @@ export default function Table({ users, refreshUsers }) {
     const { data: session } = useSession();
     const [selectedRows, setSelectedRows] = useState([]);
     const [currentUserId, setId] = useState(session?.user?._id);
+    const NEXTAUTH_URL = process.env.NEXTAUTH_URL || "http://localhost:3000";
 
 
     useEffect(() => {
@@ -24,7 +25,7 @@ export default function Table({ users, refreshUsers }) {
     function signOutAndRedirect() {
         signOut({ redirect: false }).then(() => {
             
-            window.location.href = "/api/auth/signin";
+            window.location.href = `${NEXTAUTH_URL}/api/auth/signin`;
         });
     }
 

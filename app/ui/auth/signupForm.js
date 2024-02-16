@@ -1,86 +1,91 @@
 "use client";
 import { useState } from "react";
-import postData from "../../lib/postData";
-import findData from "../../lib/findData";
+// import postData from "../../lib/postData";
+// import findData from "../../lib/findData";
 import { signIn } from "next-auth/react";
+
+const NEXTAUTH_URL = process.env.NEXTAUTH_URL || "http://localhost:3000";
 
 export default function SingupForm() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    async function handleClick() {
-        // let providedKey = "email",
-        //     providedData = email;
-
-        // let user = await findData({ providedKey, providedData });
-        // console.log(`user: ${user}`);
-        // console.log(`key: ${key}, providedData: ${email}`);
-        // if (user) {
-        //     alert("Email already used. Choose other.");
-        //     console.log(`Exists: ${user}`);
-        //     return;
-        // }
-
-        const res = await fetch("/api/findData", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ providedKey: "email", providedData: email }),
-        });
-
-        if (res.ok) {
-            const user = await res.json();
-            console.log(`User found: ${user}`);
-            // User exists, handle accordingly
-            alert("Email already used. Choose other.");
-            return;
-        } else if (res.status === 404) {
-            // User does not exist, proceed with account creation
-            // ... rest of your code for account creation ...
-        } else {
-            // Handle other errors
-            const error = await res.json();
-            alert(`Error: ${error.message}`);
-        }
-
+    async function handleClick(e) {
+        e.preventDefault();
         if (!name || !email || !password) {
             alert("Please fill in all fields.");
             return;
         }
 
-        const data = [
-            {
-                name,
-                email,
-                password, // I was too lazy to HASH password etc and it wasnt' required, but I know that it must be implemented in every other serious project
-                lastloginDate: new Date(),
-                signupDate: new Date(),
-                status: "active",
+        console.log(`email: -----> ${email}`);
+        console.log(`password: -----> ${password}`);
+
+        const requestBody = {
+            providedKey: "email",
+            providedData : email,
+        };
+
+        const req = new Request(`${NEXTAUTH_URL}/api/findData`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
             },
-        ];
+            body: JSON.stringify(requestBody),
+        });
 
-        const response = await postData(data);
+        const res = await fetch(req);
 
-        if (response === 1) {
-            signIn("credentials", {
-                email,
-                password,
-                callbackUrl: "/",
-                redirect: false,
-            }).then((result) => {
-                if (result.ok) {
-                    window.location.href = result.url;
-                } else {
-                    alert("Sign-in failed. Please try again.");
-                }
-            });
+        console.log(`res: -----> ${res}`);
+
+        if (res.ok) {
+            const user = await res.json();
+            console.log(`User found: ${user}`);
+            alert("Email already used. Choose other.");
+            return;
         } else {
-            // console.log(`response: ${response}`);
-            alert(`response: ${response}`);
-            alert("Account creation failed. Please try again.");
+
+            const data = [
+                {
+                    name,
+                    email,
+                    password, // I was too lazy to HASH password etc and it wasnt' required, but I know that it must be implemented in every other serious project
+                    lastloginDate: new Date(),
+                    signupDate: new Date(),
+                    status: "active",
+                },
+            ];
+    
+            const response = await fetch(`${NEXTAUTH_URL}/api/createUser`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+    
+            if (response.ok) {
+                signIn("credentials", {
+                    email,
+                    password,
+                    callbackUrl: "/",
+                    redirect: false,
+                }).then((result) => {
+                    if (result === true) {
+                        window.location.href = result.url;
+                    } else {
+                        alert("Sign-in failed. Please try again.");
+                    }
+                });
+            } else {
+                // const error = await response.json();
+                // alert(`Error: ${error.message}`);
+                // alert(`response: ${response}`);
+                alert("Account creation failed. Please try again.");
+            }
         }
+
+        
     }
 
     return (
@@ -116,7 +121,7 @@ export default function SingupForm() {
                                                     />
                                                     <label
                                                         className="form-label"
-                                                        for="form3Example1c"
+                                                        htmlFor="form3Example1c"
                                                     >
                                                         Your Name
                                                     </label>
@@ -139,7 +144,7 @@ export default function SingupForm() {
                                                     />
                                                     <label
                                                         className="form-label"
-                                                        for="form3Example3c"
+                                                        htmlFor="form3Example3c"
                                                     >
                                                         Your Email
                                                     </label>
@@ -162,7 +167,7 @@ export default function SingupForm() {
                                                     />
                                                     <label
                                                         className="form-label"
-                                                        for="form3Example4c"
+                                                        htmlFor="form3Example4c"
                                                     >
                                                         Password
                                                     </label>

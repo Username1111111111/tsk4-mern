@@ -3,7 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import findData from "../../../lib/findData";
 import updateTime from "../../../lib/updateTime";
 
-export const authOptions = {
+const authOptions = {
     providers: [
         CredentialsProvider({
             name: "Credentials",

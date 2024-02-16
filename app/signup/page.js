@@ -5,12 +5,8 @@ import { useSession } from "next-auth/react";
 
 export default function SignupPage() {
     const { data: session } = useSession();
-    // function getSes() {
-        
-    //     return session;
-    // }
 
-    // let session = getSes();
+    console.log(session);
 
     if (!session) {
         return <SingupForm></SingupForm>;

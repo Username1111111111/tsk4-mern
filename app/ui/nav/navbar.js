@@ -5,6 +5,8 @@ import { signIn, signOut, useSession } from "next-auth/react";
 function AuthButton() {
     const { data: session } = useSession();
 
+    console.log("navbar " + session);
+
     if (session) {
         return (
             <div>

@@ -18,13 +18,19 @@ export default function Users() {
         loadUsers();
     }, []);
 
-    if (session) {
+    
         return (
             <main style={{ backgroundColor: "#eee" }}>
                 <Table users={users} refreshUsers={loadUsers}></Table>
             </main>
         );
-    } else {
-        redirect("/api/auth/signin");
-    }
+    // if (session) {
+    //     return (
+    //         <main style={{ backgroundColor: "#eee" }}>
+    //             <Table users={users} refreshUsers={loadUsers}></Table>
+    //         </main>
+    //     );
+    // } else {
+    //     redirect("/api/auth/signin");
+    // }
 }

@@ -13,11 +13,12 @@ export default function SingupForm() {
         let providedKey = "email",
             providedData = email;
         let user = await findData({ providedKey, providedData });
-        // console.log(`key: ${key}, providedData: ${email}`);
+        console.log(`user: ${user}`);
+        console.log(`key: ${key}, providedData: ${email}`);
         if (user) {
             alert("Email already used. Choose other.");
+            console.log(`Exists: ${user}`);
             return;
-            // console.log(`Exists: ${exists.email}`);
         }
 
         // alert(exists);
@@ -54,6 +55,8 @@ export default function SingupForm() {
                 }
             });
         } else {
+            // console.log(`response: ${response}`);
+            alert(`response: ${response}`);
             alert("Account creation failed. Please try again.");
         }
     }

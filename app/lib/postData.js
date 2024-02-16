@@ -32,6 +32,7 @@ export default async function postData( data ) {
             console.error(
                 `Something went wrong trying to insert the new documents: ${err}\n`
             );
+            return 0;
         }
     } finally {
         await client.close();

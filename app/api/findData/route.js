@@ -29,8 +29,9 @@ async function handler(req) {
         try {
             const findQuery = { [providedKey]: providedData };
 
+            let user;
             try {
-                const user = await collection.findOne(findQuery);
+                user = await collection.findOne(findQuery);
                 console.log(`USER in findData: -----> ${user.email}`);
             } catch(error) {
                 console.error(

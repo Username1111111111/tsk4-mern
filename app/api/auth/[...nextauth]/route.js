@@ -35,7 +35,7 @@ const handler = NextAuth({
                         providedData : email,
                     };
 
-                    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/findData`, {
+                    const res = await fetch(`${process.env.NEXTAUTH_URL}${process.env.NEXTAUTH_URL}/api/findData`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -126,7 +126,7 @@ const handler = NextAuth({
         },
     },
     pages: {
-        signOut: `${process.env.NEXTAUTH_URL}/api/auth/signin`,
+        signOut: `${process.env.NEXTAUTH_URL}${process.env.NEXTAUTH_URL}/api/auth/signin`,
     },
 });
 

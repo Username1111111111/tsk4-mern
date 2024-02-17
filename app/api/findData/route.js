@@ -21,7 +21,6 @@ async function handler(req) {
             console.log("there was an error in findData" + error);
         }
 
-        
 
         try {
             const dbName = "task4-mern";
@@ -40,7 +39,7 @@ async function handler(req) {
 
                 const res = new Response(resBody, {
                     status: 200,
-                    statusText: "User have found",
+                    statusText: "User have been found",
                     headers: {
                         "Content-Type": "application/json",
                     },
@@ -59,7 +58,7 @@ async function handler(req) {
         } catch (error) {
             const res = new Response(null, {
                 status: 500,
-                statusText: `Error fetching user data in findData.js: ${error}`,
+                statusText: `Error fetching user data in findData.js: ${error.message}`,
                 headers: {
                     "Content-Type": "application/json",
                 },

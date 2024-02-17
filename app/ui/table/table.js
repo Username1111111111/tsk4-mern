@@ -7,7 +7,7 @@ import BlockButton from "../buttons/blockButton";
 import { useState, useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
 
-const domain = process.env.baseUrl;
+const domain = process.env.baseUrl; // this is localhost
 
 export default function Table({ users, refreshUsers }) {
     const { data: session } = useSession();

@@ -10,6 +10,7 @@ export default async function getClient() {
 
     try {
         const client = await new MongoClient(uri, options);
+        console.log(`MongoDB client fetched!: -----> ${client}`);
         return client;
     } catch {
         throw new Error("Can't fetch client");

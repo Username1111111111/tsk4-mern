@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { redirect } from "next/navigation";
+// import { redirect } from "next/navigation";
 
 const domain = process.env.baseUrl;
 
@@ -32,8 +32,11 @@ export default function SingupForm() {
             },
             body: JSON.stringify(requestBody),
         });
+        console.log(`req in singnUp: -----> ${req}`);
 
         const res = await fetch(req);
+
+        console.log(`res in singnUp: -----> ${res}`);
 
         // console.log(`res: -----> ${res}`);
         // console.log(`res.status: -----> ${res.status}`);

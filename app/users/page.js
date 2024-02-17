@@ -11,7 +11,7 @@ export default function Users() {
     const { data: session } = useSession();
 
     async function loadUsers() {
-        const req = new Request(`${process.env.NEXTAUTH_URL}/api/fetchData`, {
+        const req = new Request(`/api/fetchData`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -41,6 +41,6 @@ export default function Users() {
             </main>
         );
     } else {
-        redirect(`${process.env.NEXTAUTH_URL}/api/auth/signin`);
+        redirect(`/api/auth/signin`);
     }
 }

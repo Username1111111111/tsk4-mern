@@ -20,7 +20,7 @@ export default function Table({ users, refreshUsers }) {
     });
 
     async function __deleteData(selectedRows) {
-        const req = new Request(`${process.env.NEXTAUTH_URL}/api/deleteData`, {
+        const req = new Request(`/api/deleteData`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -37,7 +37,7 @@ export default function Table({ users, refreshUsers }) {
             newStatus
         };
 
-        const req = new Request(`${process.env.NEXTAUTH_URL}/api/updateData`, {
+        const req = new Request(`/api/updateData`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -48,7 +48,7 @@ export default function Table({ users, refreshUsers }) {
     }
 
     function signOutAndRedirect() {
-        signOut({ callbackUrl: `${process.env.NEXTAUTH_URL}/api/auth/signin`, redirect: true });
+        signOut({ callbackUrl: `/api/auth/signin`, redirect: true });
     }
 
     async function onToggleBlockButton() {

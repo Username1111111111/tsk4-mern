@@ -27,7 +27,7 @@ export default function SingupForm() {
             providedData : email,
         };
 
-        const req = new Request(`${process.env.NEXTAUTH_URL}/api/findData`, {
+        const req = new Request(`/api/findData`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -58,7 +58,7 @@ export default function SingupForm() {
                 },
             ];
     
-            const response = await fetch(`${process.env.NEXTAUTH_URL}/api/createUser`, {
+            const response = await fetch(`/api/createUser`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

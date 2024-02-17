@@ -8,6 +8,9 @@ async function handler(req) {
         console.log(`providedKey: -----> ${providedKey}`);
         console.log(`providedData: -----> ${providedKey}`);
 
+        let client;
+        let collection;
+        
         try {
             client = await getClient();
             collection = await getCollection(client);

@@ -8,6 +8,8 @@ import updateTime from "../../../lib/updateTime";
 //     },
 // };
 
+secret:process.env.SECRET
+
 const handler = NextAuth({
     providers: [
         CredentialsProvider({
@@ -128,6 +130,7 @@ const handler = NextAuth({
     pages: {
         signOut: `${process.env.NEXTAUTH_URL}/api/auth/signin`,
     },
+    secret: process.env.NEXTAUTH_SECRET
 });
 
 export { handler as GET, handler as POST };

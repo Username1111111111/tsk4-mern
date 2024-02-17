@@ -14,7 +14,12 @@ export default function Table({ users, refreshUsers }) {
     const { data: session, status } = useSession();
     const [selectedRows, setSelectedRows] = useState([]);
     // const [currentUserId, setId] = useState(session?.user?._id);
-    let currentUserId = session?.user?._id;
+    
+    async function curId() {
+        return await session?.user?._id;
+    }
+    
+    let currentUserId = curId();
 
     const isLoadingSession = status === "loading";
 
@@ -31,11 +36,13 @@ export default function Table({ users, refreshUsers }) {
     console.log(`currentUserId: -----> ${currentUserId}`);
 
     useEffect(() => {
-        currentUserId = session?.user?._id;
+        if (session) {
+            currentUserId = curId();
+        }
         if (!session) {
             signOutAndRedirect();
         }
-    }, [session]);
+    }, [session, currentUserId]);
 
     async function __deleteData(selectedRows) {
         const req = new Request(`${domain}/api/deleteData`, {
@@ -72,7 +79,6 @@ export default function Table({ users, refreshUsers }) {
 
     async function onToggleBlockButton() {
         if (selectedRows.length > 0) {
-            currentUserId = session?.user?._id;
             const newStatus = "blocked";
             if (selectedRows.includes(currentUserId)) {
                 await __updateData(selectedRows, newStatus);
@@ -88,7 +94,6 @@ export default function Table({ users, refreshUsers }) {
 
     async function onToggleUnblockButton() {
         if (selectedRows.length > 0) {
-            currentUserId = session?.user?._id;
             const newStatus = "active";
             if (session) {
                 await __updateData(selectedRows, newStatus);
@@ -103,7 +108,6 @@ export default function Table({ users, refreshUsers }) {
 
     async function onToggleDeleteButton() {
         if (selectedRows.length > 0) {
-            currentUserId = session?.user?._id;
             if (selectedRows.includes(currentUserId)) {
                 await __deleteData(selectedRows);
                 signOutAndRedirect();

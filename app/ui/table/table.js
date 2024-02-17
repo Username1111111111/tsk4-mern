@@ -11,22 +11,30 @@ import { redirect } from "next/navigation";
 const domain = process.env.baseUrl; // this is localhost
 
 export default function Table({ users, refreshUsers }) {
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
     const [selectedRows, setSelectedRows] = useState([]);
     // const [currentUserId, setId] = useState(session?.user?._id);
     let currentUserId = session?.user?._id;
-    
+
+    const isLoadingSession = status === "loading";
+
+    if (isLoadingSession) {
+        return (
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        );
+    }
 
     console.log(`currentUserId: -----> ${currentUserId}`);
 
     useEffect(() => {
-        if (session) {
-            currentUserId = session?.user?._id;
-        }
         if (!session) {
             signOutAndRedirect();
         }
-    }, [session, currentUserId]);
+    }, [session]);
 
     async function __deleteData(selectedRows) {
         const req = new Request(`${domain}/api/deleteData`, {
@@ -40,10 +48,9 @@ export default function Table({ users, refreshUsers }) {
     }
 
     async function __updateData(selectedRows, newStatus) {
-
         const requestBody = {
             ids: selectedRows,
-            newStatus
+            newStatus,
         };
 
         const req = new Request(`${domain}/api/updateData`, {
@@ -51,7 +58,7 @@ export default function Table({ users, refreshUsers }) {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify( requestBody),
+            body: JSON.stringify(requestBody),
         });
         await fetch(req);
     }

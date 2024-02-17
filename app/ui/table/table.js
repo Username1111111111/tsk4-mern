@@ -13,13 +13,7 @@ const domain = process.env.baseUrl; // this is localhost
 export default function Table({ users, refreshUsers }) {
     const { data: session, status } = useSession();
     const [selectedRows, setSelectedRows] = useState([]);
-    // const [currentUserId, setId] = useState(session?.user?._id);
-    
-    async function curId() {
-        return await session?.user?._id;
-    }
-    
-    let currentUserId = curId();
+    const [currentUserId, setCurrentUserId] = useState(null);
 
     const isLoadingSession = status === "loading";
 
@@ -36,8 +30,8 @@ export default function Table({ users, refreshUsers }) {
     console.log(`currentUserId: -----> ${currentUserId}`);
 
     useEffect(() => {
-        if (session) {
-            currentUserId = curId();
+        if(session) {
+            setCurrentUserId(session.user._id);
         }
         if (!session) {
             signOutAndRedirect();

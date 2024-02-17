@@ -80,7 +80,7 @@ async function handler(req, res) {
     }
 
     // Parse the request body
-    const { providedKey, providedData } = req.body;
+    const { providedKey, providedData } = req.json();
 
     console.log(`providedKey: -----> ${providedKey}`);
     console.log(`providedData: -----> ${providedData}`);

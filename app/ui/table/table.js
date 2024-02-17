@@ -10,15 +10,20 @@ import { getSession, signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
 
 const domain = process.env.baseUrl; // this is localhost
-const session = await getSession();
+
 
 export default function Table({ users, refreshUsers }) {
     // const { data: session } = useSession();
     const [selectedRows, setSelectedRows] = useState([]);
-    const [currentUserId, setCurrentUserId] = useState(session?.user?._id);
+    const [currentUserId, setCurrentUserId] = useState(getCurrentUserId());
 
     // const isLoadingSession = status === "loading";
     // // const isLoadingSession = currentUserId === undefined;
+
+    async function getCurrentUserId() {
+        const session = await getSession();
+        return session?.user?._id;
+    }
 
     // if (isLoadingSession) {
     //     return (
@@ -34,7 +39,7 @@ export default function Table({ users, refreshUsers }) {
 
     useEffect(() => {
         if(session) {
-            setCurrentUserId(session?.user?._id);
+            setCurrentUserId(getCurrentUserId());
         }
         if (!session) {
             signOutAndRedirect();

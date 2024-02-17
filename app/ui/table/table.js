@@ -14,13 +14,14 @@ export default function Table({ users, refreshUsers }) {
     const { data: session } = useSession();
     const [selectedRows, setSelectedRows] = useState([]);
     const [currentUserId, setId] = useState(session?.user?._id);
-    
+
+    console.log(`currentUserId: -----> ${currentUserId}`);
 
     useEffect(() => {
         if (!session) {
             signOutAndRedirect();
         }
-    });
+    }, [session]);
 
     async function __deleteData(selectedRows) {
         const req = new Request(`${domain}/api/deleteData`, {
@@ -51,7 +52,8 @@ export default function Table({ users, refreshUsers }) {
     }
 
     function signOutAndRedirect() {
-        signOut({ callbackUrl: `${domain}/api/auth/signin`, redirect: false });
+        // signOut({ callbackUrl: `${domain}/api/auth/signin`, redirect: false });
+        signOut();
         redirect(`${domain}/api/auth/signin`);
     }
 

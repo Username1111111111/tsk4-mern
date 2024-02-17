@@ -3,7 +3,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { redirect } from "next/navigation";
 
-
+const domain = process.env.baseUrl;
 
 export default function SingupForm() {
     const [name, setName] = useState("");
@@ -25,7 +25,7 @@ export default function SingupForm() {
             providedData : email,
         };
         
-        const req = new Request(`/api/findData`, {
+        const req = new Request(`${domain}/api/findData`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -56,7 +56,7 @@ export default function SingupForm() {
                 },
             ];
     
-            const response = await fetch(`/api/createUser`, {
+            const response = await fetch(`${domain}/api/createUser`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -70,7 +70,7 @@ export default function SingupForm() {
                 signIn("credentials", {
                     email,
                     password,
-                    callbackUrl: `/`,
+                    callbackUrl: `${domain}/`,
                     redirect: false,
                 })
                 // .then((result) => {

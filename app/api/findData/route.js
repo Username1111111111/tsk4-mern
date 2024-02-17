@@ -70,7 +70,7 @@ import getCollection from "../../lib/getCollection";
 
 // Assuming getCollection(client) returns a collection instance
 
-export default async function handler(req, res) {
+async function handler(req, res) {
     if (req.method !== "POST") {
         // Method Not Allowed
         res.setHeader("Allow", ["POST"]);

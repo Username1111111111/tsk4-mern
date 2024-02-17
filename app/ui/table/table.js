@@ -7,6 +7,8 @@ import BlockButton from "../buttons/blockButton";
 import { useState, useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
 
+const domain = process.env.baseUrl;
+
 export default function Table({ users, refreshUsers }) {
     const { data: session } = useSession();
     const [selectedRows, setSelectedRows] = useState([]);
@@ -20,7 +22,7 @@ export default function Table({ users, refreshUsers }) {
     });
 
     async function __deleteData(selectedRows) {
-        const req = new Request(`/api/deleteData`, {
+        const req = new Request(`${domain}/api/deleteData`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -37,7 +39,7 @@ export default function Table({ users, refreshUsers }) {
             newStatus
         };
 
-        const req = new Request(`/api/updateData`, {
+        const req = new Request(`${domain}/api/updateData`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -48,7 +50,7 @@ export default function Table({ users, refreshUsers }) {
     }
 
     function signOutAndRedirect() {
-        signOut({ callbackUrl: `/api/auth/signin`, redirect: true });
+        signOut({ callbackUrl: `${domain}/api/auth/signin`, redirect: true });
     }
 
     async function onToggleBlockButton() {

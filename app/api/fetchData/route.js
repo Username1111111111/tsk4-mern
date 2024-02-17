@@ -1,4 +1,5 @@
 import getClient from "../../lib/getClient";
+import getCollection from "../../lib/getCollection";
 
 // export const config = {
 //     api: {
@@ -11,11 +12,13 @@ async function handler(req, res) {
         const client = await getClient();
 
         try {
-            const dbName = "task4-mern";
-            const collectionName = "users";
+
+            const collection = await getCollection(client);
+            // const dbName = "task4-mern";
+            // const collectionName = "users";
     
-            const database = await client.db(dbName);
-            const collection = await database.collection(collectionName);
+            // const database = await client.db(dbName);
+            // const collection = await database.collection(collectionName);
     
             const users = await collection.find({}).toArray();
 

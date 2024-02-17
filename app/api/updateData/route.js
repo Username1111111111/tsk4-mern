@@ -1,5 +1,6 @@
 import getClient from "../../lib/getClient";
 import { ObjectId } from "mongodb";
+import getCollection from "../../lib/getCollection";
 
 // export const config = {
 //     api: {
@@ -14,11 +15,12 @@ async function handler(req, res) {
         const { ids, newStatus } = await req.json();
 
         try {
-            const dbName = "task4-mern";
-            const collectionName = "users";
+            const collection = await getCollection(client);
+            // const dbName = "task4-mern";
+            // const collectionName = "users";
 
-            const database = await client.db(dbName);
-            const collection = await database.collection(collectionName);
+            // const database = await client.db(dbName);
+            // const collection = await database.collection(collectionName);
 
             const objectIds = ids.map((id) => new ObjectId(id));
             const findQuery = { _id: { $in: objectIds } };

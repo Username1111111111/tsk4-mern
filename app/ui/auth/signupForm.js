@@ -74,15 +74,27 @@ export default function SingupForm() {
                     password,
                     callbackUrl: `${NEXTAUTH_URL}/`,
                     redirect: false,
-                }).then((result) => {
+                })
+                .then((result) => {
                     if (result?.url) {
                         console.log(`result.url: -----> ${result.url}`);
                         router.push(result.url);
                     } else {
                         console.log(`redirect('/');`);
-                        redirect('/');
+                        redirect(`${NEXTAUTH_URL}/`);
                     }
                 });
+                // signIn("credentials", {
+                //     email,
+                //     password,
+                //     redirect: false,
+                // }).then((result) => {
+                //     if (result?.url) {
+                //         window.location.href = result.url;
+                //     } else {
+                //         window.location.href = `${NEXTAUTH_URL}/`;
+                //     }
+                // });
             }
         }
 

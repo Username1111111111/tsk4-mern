@@ -13,7 +13,9 @@ const domain = process.env.baseUrl; // this is localhost
 export default function Table({ users, refreshUsers }) {
     const { data: session } = useSession();
     const [selectedRows, setSelectedRows] = useState([]);
-    const [currentUserId, setId] = useState(session?.user?._id);
+    // const [currentUserId, setId] = useState(session?.user?._id);
+    const currentUserId = session?.user?._id;
+    
 
     console.log(`currentUserId: -----> ${currentUserId}`);
 

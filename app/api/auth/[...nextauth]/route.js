@@ -2,12 +2,6 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import updateTime from "../../../lib/updateTime";
 
-// export const config = {
-//     api: {
-//         bodyParser: true,
-//     },
-// };
-
 const handler = NextAuth({
     providers: [
         CredentialsProvider({
@@ -42,8 +36,6 @@ const handler = NextAuth({
                         },
                         body: JSON.stringify(requestBody),
                     });
-
-                    // console.log(res.body);
 
                     if (res.status == 200) {
                         const user = await res.json();

@@ -21,7 +21,7 @@ export default async function RootLayout({ children }) {
             <body className={inter.className}>
                 {/* <SessionProvider session={session}> */}
                 <SessionProvider
-                    session={pageProps.session}
+                    session={session}
                     refetchInterval={3}
                 >
                     <NavBar></NavBar>

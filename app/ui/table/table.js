@@ -13,9 +13,10 @@ const domain = process.env.baseUrl; // this is localhost
 export default function Table({ users, refreshUsers }) {
     const { data: session, status } = useSession();
     const [selectedRows, setSelectedRows] = useState([]);
-    const [currentUserId, setCurrentUserId] = useState(null);
+    const [currentUserId, setCurrentUserId] = useState(session.user._id);
 
-    const isLoadingSession = status === "loading";
+    // const isLoadingSession = status === "loading";
+    const isLoadingSession = currentUserId === undefined;
 
     if (isLoadingSession) {
         return (

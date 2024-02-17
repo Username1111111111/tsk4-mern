@@ -13,26 +13,18 @@ async function handler(req) {
         console.log(`providedKey: -----> ${providedKey}`);
         console.log(`providedData: -----> ${providedKey}`);
         
-        let client;
-        
-        try {
-            client = await getClient();
-        } catch (error) {
-            console.log("there was an error in findData" + error);
-        }
-
+        const client = await getClient();
 
         try {
             const dbName = "task4-mern";
             const collectionName = "users";
-            const database = client.db(dbName);
-            const collection = database.collection(collectionName);
-
             const findQuery = { [providedKey]: providedData };
-            
+
+            const database = await client.db(dbName);
+            const collection = await database.collection(collectionName);
             const user = await collection.findOne(findQuery);
 
-            console.log(`USER: -----> ${user.email}`);
+            console.log(`USER in findData: -----> ${user.email}`);
 
             if (user) {
                 const resBody = JSON.stringify(user);

@@ -9,7 +9,7 @@ export const config = {
 async function handler(req, res) {
     if (req.method === "POST") {
         // console.log(`req.body: -----> ${req.body}`);
-        const { providedKey, providedData } = req.body;
+        const { providedKey, providedData } = await req.json();
         // if (providedData === undefined || providedKey === undefined) {
         //     return;
         // }
@@ -24,7 +24,9 @@ async function handler(req, res) {
             const collectionName = "users";
             const database = client.db(dbName);
             const collection = database.collection(collectionName);
+
             const findQuery = { [providedKey]: providedData };
+            
             const user = await collection.findOne(findQuery);
 
             console.log(`USER: -----> ${user.email}`);

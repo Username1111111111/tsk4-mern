@@ -1,17 +1,33 @@
 "use client";
 import { useState, useEffect } from "react";
 import Table from "../ui/table/table";
-import fetchData from "../lib/fetchData";
 import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
 
+const NEXTAUTH_URL = process.env.NEXTAUTH_URL || "http://localhost:3000";
+
 export default function Users() {
     const [users, setUsers] = useState([]);
-    const { data: session} = useSession();
+    const { data: session } = useSession();
 
     async function loadUsers() {
-        const fetchedUsers = await fetchData();
-        setUsers(fetchedUsers);
+        const req = new Request(`${NEXTAUTH_URL}/api/fetchData`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        try {
+            const res = await fetch(req);
+            if (!res.ok) {
+                throw new Error(`HTTP error! status: ${res.status}`);
+            }
+            const fetchedUsers = await res.json();
+            setUsers(fetchedUsers);
+        } catch (error) {
+            console.error("Error fetching users:", error);
+        }
     }
 
     useEffect(() => {
@@ -25,6 +41,6 @@ export default function Users() {
             </main>
         );
     } else {
-        redirect("/api/auth/signin");
+        redirect(`${NEXTAUTH_URL}/api/auth/signin`);
     }
 }

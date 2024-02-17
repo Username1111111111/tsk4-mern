@@ -1,12 +1,12 @@
 "use client";
 import { useState } from "react";
-// import postData from "../../lib/postData";
-// import findData from "../../lib/findData";
 import { signIn } from "next-auth/react";
+import { useRouter } from 'next/router';
 
 const NEXTAUTH_URL = process.env.NEXTAUTH_URL || "http://localhost:3000";
 
 export default function SingupForm() {
+    const router = useRouter();
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -18,8 +18,8 @@ export default function SingupForm() {
             return;
         }
 
-        console.log(`email: -----> ${email}`);
-        console.log(`password: -----> ${password}`);
+        // console.log(`email: -----> ${email}`);
+        // console.log(`password: -----> ${password}`);
 
         const requestBody = {
             providedKey: "email",
@@ -36,9 +36,10 @@ export default function SingupForm() {
 
         const res = await fetch(req);
 
-        console.log(`res: -----> ${res}`);
+        // console.log(`res: -----> ${res}`);
+        // console.log(`res.status: -----> ${res.status}`);
 
-        if (res.ok) {
+        if (res.status == 200) {
             const user = await res.json();
             console.log(`User found: ${user}`);
             alert("Email already used. Choose other.");
@@ -63,25 +64,24 @@ export default function SingupForm() {
                 },
                 body: JSON.stringify(data),
             });
+
+            console.log(`response.status: -----> ${response.status}`);
     
-            if (response.ok) {
+            if (response.status == 201) {
                 signIn("credentials", {
                     email,
                     password,
-                    callbackUrl: "/",
+                    callbackUrl: `${NEXTAUTH_URL}/`,
                     redirect: false,
                 }).then((result) => {
-                    if (result === true) {
-                        window.location.href = result.url;
+                    if (result?.url) {
+                        console.log(`result.url: -----> ${result.url}`);
+                        router.push(result.url);
                     } else {
-                        alert("Sign-in failed. Please try again.");
+                        console.log(`router.push('/');`);
+                        router.push('/');
                     }
                 });
-            } else {
-                // const error = await response.json();
-                // alert(`Error: ${error.message}`);
-                // alert(`response: ${response}`);
-                alert("Account creation failed. Please try again.");
             }
         }
 

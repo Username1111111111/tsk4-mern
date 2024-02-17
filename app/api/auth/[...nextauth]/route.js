@@ -1,6 +1,5 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-// import findData from "../../../lib/findData";
 import updateTime from "../../../lib/updateTime";
 
 const NEXTAUTH_URL = process.env.NEXTAUTH_URL || "http://localhost:3000";
@@ -33,20 +32,22 @@ const handler = NextAuth({
                 
 
                 try {
+                    const requestBody = {
+                        providedKey: "email",
+                        providedData : email,
+                    };
+
                     const res = await fetch(`${NEXTAUTH_URL}/api/findData`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
                         },
-                        body: JSON.stringify({
-                            providedKey: "email",
-                            providedData: email,
-                        }),
+                        body: JSON.stringify(requestBody),
                     });
 
                     // console.log(res.body);
 
-                    if (res.ok) {
+                    if (res.status == 200) {
                         const user = await res.json();
                         console.log(`User found: ${user}`);
 
@@ -102,27 +103,32 @@ const handler = NextAuth({
             return session;
         },
         async redirect({ url, baseUrl }) {
+            console.log(`baseUrl: -----> ${baseUrl}`);
+            console.log(`url: -----> ${url}`);
+            
             if (url.startsWith(baseUrl)) {
+                console.log(`returned url: -----> ${url}`);
                 return url;
+            } else {
+                console.log(`returned baseUrl: -----> ${baseUrl}`);
+                return baseUrl;
             }
-
-            return baseUrl;
         },
         async signIn({ user }) {
             if (user) {
                 try {
                     await updateTime(user._id);
-                    return true;
+                    return await true;
                 } catch (error) {
                     console.error(`Error updating last login time: ${error}`);
-                    return false;
+                    return await false;
                 }
             }
             return true;
         },
     },
     pages: {
-        signOut: `${NEXTAUTH_URL}/api/auth/signin`,
+        signOut: `${NEXTAUTH_URL}/api/auth/signin`
     },
 });
 

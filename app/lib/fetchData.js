@@ -13,12 +13,9 @@ export default async function fetchData() {
         const users = await collection.find({}).toArray();
 
         users.forEach((user) => {
-            // json = JSON.parse(JSON.stringify(doc));
-            // user = JSON.parse( JSON.stringify(user) );
             user._id = user._id.toString();
             user.lastloginDate = user.lastloginDate.toLocaleDateString();
             user.signupDate = user.signupDate.toLocaleDateString();
-            // console.log(user._id)
         });
         
         await users;

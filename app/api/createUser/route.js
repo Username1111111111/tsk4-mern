@@ -9,7 +9,9 @@ export const config = {
 async function handler(req, res) {
     if (req.method === "POST") {
         const client = await getClient();
-        const data = req.body;
+        const data = await req.json();
+
+        console.log(`data: -----> ${data}`);
 
         try {
             const dbName = "task4-mern";
@@ -21,16 +23,36 @@ async function handler(req, res) {
             console.log(
                 `${insertManyResult.insertedCount} documents successfully inserted.`
             );
-            return Response.status(201).json({ message: "User created successfully" });
+            const res = new Response(data, {
+                status: 201,
+                statusText: "User created successfully",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            return res
         } catch (error) {
-            console.error(`Error inserting documents: ${error}`);
-            returnResponse.status(500).json({ message: "Error creating user", error });
+            const res = new Response(error, {
+                status: 500,
+                statusText: "Error creating user",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            return res;
         } finally {
             await client.close();
         }
     } else {
-        // Response.setHeader("Allow", ["POST"]);
-        return Response.status(405).json(`Method ${req.method} Not Allowed`);
+        const res = new Response(null, {
+            status: 405,
+            statusText: `Method ${req.method} Not Allowed`,
+            headers: {
+                "Content-Type": "application/json",
+                "Allow": ["POST"]
+            },
+        });
+        return res;
     }
 }
 

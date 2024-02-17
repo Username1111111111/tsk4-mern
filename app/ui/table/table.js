@@ -5,9 +5,7 @@ import DeleteButton from "../buttons/deleteButton";
 import UnblockButton from "../buttons/unblockButton";
 import BlockButton from "../buttons/blockButton";
 import { useState, useEffect } from "react";
-import updateData from "../../lib/updateData";
-import deleteData from "../../lib/deleteData";
-import { useSession,  signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 
 export default function Table({ users, refreshUsers }) {
     const { data: session } = useSession();
@@ -15,31 +13,52 @@ export default function Table({ users, refreshUsers }) {
     const [currentUserId, setId] = useState(session?.user?._id);
     const NEXTAUTH_URL = process.env.NEXTAUTH_URL || "http://localhost:3000";
 
-
     useEffect(() => {
         if (!session) {
             signOutAndRedirect();
         }
     });
 
-    function signOutAndRedirect() {
-        signOut({ redirect: false }).then(() => {
-            
-            window.location.href = `${NEXTAUTH_URL}/api/auth/signin`;
+    async function __deleteData(selectedRows) {
+        const req = new Request(`${NEXTAUTH_URL}/api/deleteData`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(selectedRows),
         });
+        await fetch(req);
+    }
+
+    async function __updateData(selectedRows, newStatus) {
+
+        const requestBody = {
+            ids: selectedRows,
+            newStatus
+        };
+
+        const req = new Request(`${NEXTAUTH_URL}/api/updateData`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify( requestBody),
+        });
+        await fetch(req);
+    }
+
+    function signOutAndRedirect() {
+        signOut({ callbackUrl: `${NEXTAUTH_URL}/api/auth/signin`, redirect: true });
     }
 
     async function onToggleBlockButton() {
         if (selectedRows.length > 0) {
             const newStatus = "blocked";
             if (selectedRows.includes(currentUserId)) {
-                await updateData(
-                    selectedRows,
-                    newStatus
-                );
+                await __updateData(selectedRows, newStatus);
                 signOutAndRedirect();
             } else {
-                await updateData(selectedRows, newStatus);
+                await __updateData(selectedRows, newStatus);
                 refreshUsers();
             }
         } else {
@@ -51,7 +70,7 @@ export default function Table({ users, refreshUsers }) {
         if (selectedRows.length > 0) {
             const newStatus = "active";
             if (session) {
-                await updateData(selectedRows, newStatus);
+                await __updateData(selectedRows, newStatus);
                 refreshUsers();
             } else if (!session) {
                 signOutAndRedirect();
@@ -62,15 +81,14 @@ export default function Table({ users, refreshUsers }) {
     }
 
     async function onToggleDeleteButton() {
-        
         if (selectedRows.length > 0) {
             if (selectedRows.includes(currentUserId)) {
-                await deleteData(selectedRows);
+                await __deleteData(selectedRows);
                 signOutAndRedirect();
             } else {
-                await deleteData(selectedRows);
+                await __deleteData(selectedRows);
                 refreshUsers();
-            }        
+            }
         } else {
             console.log("No rows selected for deletion");
         }

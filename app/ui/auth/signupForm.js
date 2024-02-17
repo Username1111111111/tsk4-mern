@@ -4,7 +4,7 @@ import { signIn } from "next-auth/react";
 // import { useRouter } from 'next/router';
 import { redirect } from "next/navigation";
 
-const NEXTAUTH_URL = process.env.NEXTAUTH_URL || "http://localhost:3000";
+const NEXTAUTH_URL = process.env.NEXTAUTH_URL;
 
 export default function SingupForm() {
     // const router = useRouter();

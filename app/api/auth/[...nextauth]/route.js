@@ -2,8 +2,6 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import updateTime from "../../../lib/updateTime";
 
-
-
 // export const config = {
 //     api: {
 //         bodyParser: true,
@@ -37,7 +35,7 @@ const handler = NextAuth({
                         providedData : email,
                     };
 
-                    const res = await fetch(`/api/findData`, {
+                    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/findData`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -86,14 +84,14 @@ const handler = NextAuth({
         }),
     ],
     callbacks: {
-        async jwt({ token, user }) {
-            if (user) {
-                token._id = user._id;
-                token.status = user.status;
-                token.email = user.email;
-            }
-            return token;
-        },
+        // async jwt({ token, user }) {
+        //     if (user) {
+        //         token._id = user._id;
+        //         token.status = user.status;
+        //         token.email = user.email;
+        //     }
+        //     return token;
+        // },
         async session({ session, token }) {
             session.user = {
                 _id: token._id,
@@ -128,7 +126,7 @@ const handler = NextAuth({
         },
     },
     pages: {
-        signOut: `/api/auth/signin`
+        signOut: `${process.env.NEXTAUTH_URL}/api/auth/signin`,
     },
 });
 

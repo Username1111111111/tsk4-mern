@@ -19,7 +19,11 @@ export default async function RootLayout({ children }) {
     return (
         <html lang="en">
             <body className={inter.className}>
-                <SessionProvider session={session}>
+                {/* <SessionProvider session={session}> */}
+                <SessionProvider
+                    session={pageProps.session}
+                    refetchInterval={3}
+                >
                     <NavBar></NavBar>
                     {children}
                 </SessionProvider>

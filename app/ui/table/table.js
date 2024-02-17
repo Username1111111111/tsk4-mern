@@ -5,13 +5,15 @@ import DeleteButton from "../buttons/deleteButton";
 import UnblockButton from "../buttons/unblockButton";
 import BlockButton from "../buttons/blockButton";
 import { useState, useEffect } from "react";
-import { useSession, signOut } from "next-auth/react";
+// import { useSession, signOut } from "next-auth/react";
+import { getSession, signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
 
 const domain = process.env.baseUrl; // this is localhost
+const session = await getSession();
 
 export default function Table({ users, refreshUsers }) {
-    const { data: session, status } = useSession();
+    // const { data: session } = useSession();
     const [selectedRows, setSelectedRows] = useState([]);
     const [currentUserId, setCurrentUserId] = useState(session?.user?._id);
 

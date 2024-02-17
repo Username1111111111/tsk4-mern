@@ -1,11 +1,11 @@
 import getClient from "../../lib/getClient";
 import { ObjectId } from "mongodb";
 
-export const config = {
-    api: {
-        bodyParser: true,
-    },
-};
+// export const config = {
+//     api: {
+//         bodyParser: true,
+//     },
+// };
 
 // export default async function updateData( ids, newStatus ) {
 async function handler(req, res) {

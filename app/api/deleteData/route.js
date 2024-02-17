@@ -1,13 +1,12 @@
 import getClient from "../../lib/getClient";
 import { ObjectId } from "mongodb";
 
-export const config = {
-    api: {
-        bodyParser: true,
-    },
-};
+// export const config = {
+//     api: {
+//         bodyParser: true,
+//     },
+// };
 
-// export default async function deleteData(ids) {
 async function handler(req, res) {
     if (req.method === "POST") {
         const client = await getClient();

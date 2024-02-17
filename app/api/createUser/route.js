@@ -1,10 +1,10 @@
 import getClient from "../../lib/getClient";
 
-export const config = {
-    api: {
-        bodyParser: true,
-    },
-};
+// export const config = {
+//     api: {
+//         bodyParser: true,
+//     },
+// };
 
 async function handler(req, res) {
     if (req.method === "POST") {

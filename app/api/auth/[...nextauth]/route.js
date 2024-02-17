@@ -4,11 +4,11 @@ import updateTime from "../../../lib/updateTime";
 
 const NEXTAUTH_URL = process.env.NEXTAUTH_URL || "http://localhost:3000";
 
-export const config = {
-    api: {
-        bodyParser: true,
-    },
-};
+// export const config = {
+//     api: {
+//         bodyParser: true,
+//     },
+// };
 
 const handler = NextAuth({
     providers: [

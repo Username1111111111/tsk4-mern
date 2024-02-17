@@ -13,26 +13,26 @@ const domain = process.env.baseUrl; // this is localhost
 export default function Table({ users, refreshUsers }) {
     const { data: session, status } = useSession();
     const [selectedRows, setSelectedRows] = useState([]);
-    const [currentUserId, setCurrentUserId] = useState(session.user._id);
+    const [currentUserId, setCurrentUserId] = useState(session?.user?._id);
 
     // const isLoadingSession = status === "loading";
-    const isLoadingSession = currentUserId === undefined;
+    // // const isLoadingSession = currentUserId === undefined;
 
-    if (isLoadingSession) {
-        return (
-            <div class="d-flex justify-content-center">
-                <div class="spinner-border" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>
-            </div>
-        );
-    }
+    // if (isLoadingSession) {
+    //     return (
+    //         <div class="d-flex justify-content-center">
+    //             <div class="spinner-border" role="status">
+    //                 <span class="sr-only"></span>
+    //             </div>
+    //         </div>
+    //     );
+    // }
 
     console.log(`currentUserId: -----> ${currentUserId}`);
 
     useEffect(() => {
         if(session) {
-            setCurrentUserId(session.user._id);
+            setCurrentUserId(session?.user?._id);
         }
         if (!session) {
             signOutAndRedirect();

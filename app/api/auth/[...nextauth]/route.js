@@ -84,14 +84,14 @@ const handler = NextAuth({
         }),
     ],
     callbacks: {
-        // async jwt({ token, user }) {
-        //     if (user) {
-        //         token._id = user._id;
-        //         token.status = user.status;
-        //         token.email = user.email;
-        //     }
-        //     return token;
-        // },
+        async jwt({ token, user }) {
+            if (user) {
+                token._id = user._id;
+                token.status = user.status;
+                token.email = user.email;
+            }
+            return token;
+        },
         async session({ session, token }) {
             session.user = {
                 _id: token._id,
@@ -101,14 +101,14 @@ const handler = NextAuth({
             return session;
         },
         async redirect({ url, baseUrl }) {
-            console.log(`baseUrl: -----> ${baseUrl}`);
-            console.log(`url: -----> ${url}`);
+            // console.log(`baseUrl: -----> ${baseUrl}`);
+            // console.log(`url: -----> ${url}`);
             
             if (url.startsWith(baseUrl)) {
-                console.log(`returned url: -----> ${url}`);
+                // console.log(`returned url: -----> ${url}`);
                 return url;
             } else {
-                console.log(`returned baseUrl: -----> ${baseUrl}`);
+                // console.log(`returned baseUrl: -----> ${baseUrl}`);
                 return baseUrl;
             }
         },

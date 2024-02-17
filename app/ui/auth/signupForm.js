@@ -1,13 +1,11 @@
 "use client";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-// import { useRouter } from 'next/router';
 import { redirect } from "next/navigation";
 
 
 
 export default function SingupForm() {
-    // const router = useRouter();
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -26,7 +24,7 @@ export default function SingupForm() {
             providedKey: "email",
             providedData : email,
         };
-
+        
         const req = new Request(`/api/findData`, {
             method: "POST",
             headers: {
@@ -75,15 +73,15 @@ export default function SingupForm() {
                     callbackUrl: `/`,
                     redirect: false,
                 })
-                .then((result) => {
-                    if (result?.url) {
-                        console.log(`result.url: -----> ${result.url}`);
-                        router.push(result.url);
-                    } else {
-                        console.log(`redirect('/');`);
-                        redirect(`/`);
-                    }
-                });
+                // .then((result) => {
+                //     if (result) {
+                //         console.log(`result.url: -----> ${result.url}`);
+                //         redirect(result.url);
+                //     } else {
+                //         console.log(`redirect('/');`);
+                //         redirect(`/`);
+                //     }
+                // });
                 // signIn("credentials", {
                 //     email,
                 //     password,

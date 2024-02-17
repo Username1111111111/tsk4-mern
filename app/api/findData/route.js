@@ -6,14 +6,22 @@ import getClient from "../../lib/getClient";
 //     },
 // };
 
-async function handler(req, res) {
+async function handler(req) {
     if (req.method === "POST") {
         const { providedKey, providedData } = await req.json();
 
         console.log(`providedKey: -----> ${providedKey}`);
         console.log(`providedData: -----> ${providedKey}`);
+        
+        let client;
+        
+        try {
+            client = await getClient();
+        } catch (error) {
+            console.log("there was an error in findData" + error);
+        }
 
-        const client = await getClient();
+        
 
         try {
             const dbName = "task4-mern";
@@ -51,7 +59,7 @@ async function handler(req, res) {
         } catch (error) {
             const res = new Response(null, {
                 status: 500,
-                statusText: `Error fetching user data: ${error}`,
+                statusText: `Error fetching user data in findData.js: ${error}`,
                 headers: {
                     "Content-Type": "application/json",
                 },

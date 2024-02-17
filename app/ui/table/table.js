@@ -14,16 +14,19 @@ export default function Table({ users, refreshUsers }) {
     const { data: session } = useSession();
     const [selectedRows, setSelectedRows] = useState([]);
     // const [currentUserId, setId] = useState(session?.user?._id);
-    const currentUserId = session?.user?._id;
+    let currentUserId = session?.user?._id;
     
 
     console.log(`currentUserId: -----> ${currentUserId}`);
 
     useEffect(() => {
+        if (session) {
+            currentUserId = session?.user?._id;
+        }
         if (!session) {
             signOutAndRedirect();
         }
-    }, [session]);
+    }, [session, currentUserId]);
 
     async function __deleteData(selectedRows) {
         const req = new Request(`${domain}/api/deleteData`, {

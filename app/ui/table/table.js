@@ -11,7 +11,7 @@ export default function Table({ users, refreshUsers }) {
     const { data: session } = useSession();
     const [selectedRows, setSelectedRows] = useState([]);
     const [currentUserId, setId] = useState(session?.user?._id);
-    const NEXTAUTH_URL = process.env.NEXTAUTH_URL || "http://localhost:3000";
+    const NEXTAUTH_URL = process.env.NEXTAUTH_URL;
 
     useEffect(() => {
         if (!session) {

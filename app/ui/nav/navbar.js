@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 
-const NEXTAUTH_URL = process.env.NEXTAUTH_URL || "http://localhost:3000";
+const NEXTAUTH_URL = process.env.NEXTAUTH_URL;
 
 function AuthButton() {
     const { data: session } = useSession();

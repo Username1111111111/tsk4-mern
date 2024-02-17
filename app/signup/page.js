@@ -3,7 +3,7 @@ import SingupForm from "../ui/auth/signupForm";
 import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
 
-const NEXTAUTH_URL = process.env.NEXTAUTH_URL || "http://localhost:3000";
+const NEXTAUTH_URL = process.env.NEXTAUTH_URL;
 
 export default function SignupPage() {
     const { data: session } = useSession();

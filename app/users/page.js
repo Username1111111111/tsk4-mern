@@ -4,14 +4,14 @@ import Table from "../ui/table/table";
 import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
 
-const NEXTAUTH_URL = process.env.NEXTAUTH_URL;
+
 
 export default function Users() {
     const [users, setUsers] = useState([]);
     const { data: session } = useSession();
 
     async function loadUsers() {
-        const req = new Request(`${NEXTAUTH_URL}/api/fetchData`, {
+        const req = new Request(`/api/fetchData`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -41,6 +41,6 @@ export default function Users() {
             </main>
         );
     } else {
-        redirect(`${NEXTAUTH_URL}/api/auth/signin`);
+        redirect(`/api/auth/signin`);
     }
 }

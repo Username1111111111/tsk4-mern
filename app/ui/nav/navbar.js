@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 
-const NEXTAUTH_URL = process.env.NEXTAUTH_URL;
+
 
 function AuthButton() {
     const { data: session } = useSession();
@@ -16,7 +16,7 @@ function AuthButton() {
                 <button
                     className="btn btn-primary m-2"
                     onClick={() => {
-                        signOut({ callbackUrl: `${NEXTAUTH_URL}/` });
+                        signOut({ callbackUrl: `/` });
                     }}
                 >
                     Sign out
@@ -27,7 +27,7 @@ function AuthButton() {
     return (
         <div>
             Not signed in
-            <button className="btn btn-primary m-2" onClick={() => signIn({ callbackUrl: `${NEXTAUTH_URL}/` })}>
+            <button className="btn btn-primary m-2" onClick={() => signIn({ callbackUrl: `/` })}>
                 Sign in
             </button>
         </div>

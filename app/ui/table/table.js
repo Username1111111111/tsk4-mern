@@ -11,7 +11,7 @@ export default function Table({ users, refreshUsers }) {
     const { data: session } = useSession();
     const [selectedRows, setSelectedRows] = useState([]);
     const [currentUserId, setId] = useState(session?.user?._id);
-    const NEXTAUTH_URL = process.env.NEXTAUTH_URL;
+    
 
     useEffect(() => {
         if (!session) {
@@ -20,7 +20,7 @@ export default function Table({ users, refreshUsers }) {
     });
 
     async function __deleteData(selectedRows) {
-        const req = new Request(`${NEXTAUTH_URL}/api/deleteData`, {
+        const req = new Request(`/api/deleteData`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -37,7 +37,7 @@ export default function Table({ users, refreshUsers }) {
             newStatus
         };
 
-        const req = new Request(`${NEXTAUTH_URL}/api/updateData`, {
+        const req = new Request(`/api/updateData`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -48,7 +48,7 @@ export default function Table({ users, refreshUsers }) {
     }
 
     function signOutAndRedirect() {
-        signOut({ callbackUrl: `${NEXTAUTH_URL}/api/auth/signin`, redirect: true });
+        signOut({ callbackUrl: `/api/auth/signin`, redirect: true });
     }
 
     async function onToggleBlockButton() {

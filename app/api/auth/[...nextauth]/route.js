@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import updateTime from "../../../lib/updateTime";
 
-const NEXTAUTH_URL = process.env.NEXTAUTH_URL;
+
 
 // export const config = {
 //     api: {
@@ -37,7 +37,7 @@ const handler = NextAuth({
                         providedData : email,
                     };
 
-                    const res = await fetch(`${NEXTAUTH_URL}/api/findData`, {
+                    const res = await fetch(`/api/findData`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -128,7 +128,7 @@ const handler = NextAuth({
         },
     },
     pages: {
-        signOut: `${NEXTAUTH_URL}/api/auth/signin`
+        signOut: `/api/auth/signin`
     },
 });
 

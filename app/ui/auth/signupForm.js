@@ -4,7 +4,7 @@ import { signIn } from "next-auth/react";
 // import { useRouter } from 'next/router';
 import { redirect } from "next/navigation";
 
-const NEXTAUTH_URL = process.env.NEXTAUTH_URL;
+
 
 export default function SingupForm() {
     // const router = useRouter();
@@ -27,7 +27,7 @@ export default function SingupForm() {
             providedData : email,
         };
 
-        const req = new Request(`${NEXTAUTH_URL}/api/findData`, {
+        const req = new Request(`/api/findData`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -58,7 +58,7 @@ export default function SingupForm() {
                 },
             ];
     
-            const response = await fetch(`${NEXTAUTH_URL}/api/createUser`, {
+            const response = await fetch(`/api/createUser`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -72,7 +72,7 @@ export default function SingupForm() {
                 signIn("credentials", {
                     email,
                     password,
-                    callbackUrl: `${NEXTAUTH_URL}/`,
+                    callbackUrl: `/`,
                     redirect: false,
                 })
                 .then((result) => {
@@ -81,7 +81,7 @@ export default function SingupForm() {
                         router.push(result.url);
                     } else {
                         console.log(`redirect('/');`);
-                        redirect(`${NEXTAUTH_URL}/`);
+                        redirect(`/`);
                     }
                 });
                 // signIn("credentials", {
@@ -92,7 +92,7 @@ export default function SingupForm() {
                 //     if (result?.url) {
                 //         window.location.href = result.url;
                 //     } else {
-                //         window.location.href = `${NEXTAUTH_URL}/`;
+                //         window.location.href = `/`;
                 //     }
                 // });
             }

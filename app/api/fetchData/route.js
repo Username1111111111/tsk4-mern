@@ -19,14 +19,6 @@ async function handler(req, res) {
     
             const users = await collection.find({}).toArray();
 
-            // console.log(`fetchData users: -----> ${users}`);
-    
-            // users.forEach((user) => {
-            //     user._id = user._id.toString();
-            //     user.lastloginDate = user.lastloginDate.toLocaleDateString();
-            //     user.signupDate = user.signupDate.toLocaleDateString();
-            // });
-
             users.forEach((user) => {
                 user._id = user._id.toString();
                 user.lastloginDate = new Date(user.lastloginDate).toLocaleDateString();
@@ -34,10 +26,8 @@ async function handler(req, res) {
             });
 
             const resBody = JSON.stringify(users);
-            // const resBody = users;
 
             const res = new Response(resBody, {
-            // const res = new Response(users, {
                 status: 200,
                 statusText: "Users have fetched",
                 headers: {

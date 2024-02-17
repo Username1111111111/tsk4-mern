@@ -1,12 +1,13 @@
 "use client";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
+import { redirect } from "next/navigation";
 
 const NEXTAUTH_URL = process.env.NEXTAUTH_URL || "http://localhost:3000";
 
 export default function SingupForm() {
-    const router = useRouter();
+    // const router = useRouter();
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -78,8 +79,8 @@ export default function SingupForm() {
                         console.log(`result.url: -----> ${result.url}`);
                         router.push(result.url);
                     } else {
-                        console.log(`router.push('/');`);
-                        router.push('/');
+                        console.log(`redirect('/');`);
+                        redirect('/');
                     }
                 });
             }

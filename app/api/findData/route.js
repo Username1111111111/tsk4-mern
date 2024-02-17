@@ -8,11 +8,7 @@ import getClient from "../../lib/getClient";
 
 async function handler(req, res) {
     if (req.method === "POST") {
-        // console.log(`req.body: -----> ${req.body}`);
         const { providedKey, providedData } = await req.json();
-        // if (providedData === undefined || providedKey === undefined) {
-        //     return;
-        // }
 
         console.log(`providedKey: -----> ${providedKey}`);
         console.log(`providedData: -----> ${providedKey}`);
@@ -65,7 +61,6 @@ async function handler(req, res) {
             await client.close();
         }
     } else {
-        // return Response.setHeader("Allow", ["POST"]);
         const res = new Response(null, {
             status: 405,
             statusText: `Method ${req.method} Not Allowed`,

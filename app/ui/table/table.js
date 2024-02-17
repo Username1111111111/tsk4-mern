@@ -31,6 +31,7 @@ export default function Table({ users, refreshUsers }) {
     console.log(`currentUserId: -----> ${currentUserId}`);
 
     useEffect(() => {
+        currentUserId = session?.user?._id;
         if (!session) {
             signOutAndRedirect();
         }
@@ -71,6 +72,7 @@ export default function Table({ users, refreshUsers }) {
 
     async function onToggleBlockButton() {
         if (selectedRows.length > 0) {
+            currentUserId = session?.user?._id;
             const newStatus = "blocked";
             if (selectedRows.includes(currentUserId)) {
                 await __updateData(selectedRows, newStatus);
@@ -86,6 +88,7 @@ export default function Table({ users, refreshUsers }) {
 
     async function onToggleUnblockButton() {
         if (selectedRows.length > 0) {
+            currentUserId = session?.user?._id;
             const newStatus = "active";
             if (session) {
                 await __updateData(selectedRows, newStatus);
@@ -100,6 +103,7 @@ export default function Table({ users, refreshUsers }) {
 
     async function onToggleDeleteButton() {
         if (selectedRows.length > 0) {
+            currentUserId = session?.user?._id;
             if (selectedRows.includes(currentUserId)) {
                 await __deleteData(selectedRows);
                 signOutAndRedirect();

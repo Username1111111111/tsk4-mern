@@ -5,25 +5,18 @@ import DeleteButton from "../buttons/deleteButton";
 import UnblockButton from "../buttons/unblockButton";
 import BlockButton from "../buttons/blockButton";
 import { useState, useEffect } from "react";
-// import { useSession, signOut } from "next-auth/react";
-import { getSession, signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
 
 const domain = process.env.baseUrl; // this is localhost
 
-
 export default function Table({ users, refreshUsers }) {
-    // const { data: session } = useSession();
+    const { data: session, status } = useSession();
     const [selectedRows, setSelectedRows] = useState([]);
-    const [currentUserId, setCurrentUserId] = useState(getCurrentUserId());
+    const [currentUserId, setCurrentUserId] = useState(session?.user?._id);
 
     // const isLoadingSession = status === "loading";
     // // const isLoadingSession = currentUserId === undefined;
-
-    async function getCurrentUserId() {
-        const session = await getSession();
-        return session?.user?._id;
-    }
 
     // if (isLoadingSession) {
     //     return (
@@ -39,7 +32,7 @@ export default function Table({ users, refreshUsers }) {
 
     useEffect(() => {
         if(session) {
-            setCurrentUserId(getCurrentUserId());
+            setCurrentUserId(session?.user?._id);
         }
         if (!session) {
             signOutAndRedirect();

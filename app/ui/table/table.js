@@ -6,6 +6,7 @@ import UnblockButton from "../buttons/unblockButton";
 import BlockButton from "../buttons/blockButton";
 import { useState, useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 const domain = process.env.baseUrl; // this is localhost
 
@@ -50,7 +51,8 @@ export default function Table({ users, refreshUsers }) {
     }
 
     function signOutAndRedirect() {
-        signOut({ callbackUrl: `${domain}/api/auth/signin`, redirect: true });
+        signOut({ callbackUrl: `${domain}/api/auth/signin`, redirect: false });
+        redirect(`${domain}/api/auth/signin`);
     }
 
     async function onToggleBlockButton() {

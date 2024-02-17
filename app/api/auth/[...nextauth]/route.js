@@ -8,8 +8,6 @@ import updateTime from "../../../lib/updateTime";
 //     },
 // };
 
-secret:process.env.SECRET
-
 const handler = NextAuth({
     providers: [
         CredentialsProvider({

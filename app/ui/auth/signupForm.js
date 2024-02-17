@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-// import { redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 
 const domain = process.env.baseUrl;
 
@@ -76,26 +76,7 @@ export default function SingupForm() {
                     callbackUrl: `${domain}/`,
                     redirect: false,
                 })
-                // .then((result) => {
-                //     if (result) {
-                //         console.log(`result.url: -----> ${result.url}`);
-                //         redirect(result.url);
-                //     } else {
-                //         console.log(`redirect('/');`);
-                //         redirect(`/`);
-                //     }
-                // });
-                // signIn("credentials", {
-                //     email,
-                //     password,
-                //     redirect: false,
-                // }).then((result) => {
-                //     if (result?.url) {
-                //         window.location.href = result.url;
-                //     } else {
-                //         window.location.href = `/`;
-                //     }
-                // });
+                redirect(`${domain}/`);
             }
         }
 

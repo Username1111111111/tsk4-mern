@@ -17,10 +17,6 @@ async function handler(req, res) {
         try {
 
             const collection = await getCollection(client);
-            // const dbName = "task4-mern";
-            // const collectionName = "users";
-            // const database = client.db(dbName);
-            // const collection = database.collection(collectionName);
 
             const insertManyResult = await collection.insertMany(data);
             console.log(

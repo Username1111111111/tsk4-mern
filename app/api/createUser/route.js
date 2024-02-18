@@ -18,6 +18,9 @@ async function handler(req, res) {
 
             const collection = await getCollection(client);
 
+            // Create a unique index for the email field
+            // await collection.createIndex({ email: 1 }, { unique: true });
+
             const insertManyResult = await collection.insertMany(data);
             console.log(
                 `${insertManyResult.insertedCount} documents successfully inserted.`
@@ -31,14 +34,26 @@ async function handler(req, res) {
             });
             return res
         } catch (error) {
-            const res = new Response(error, {
-                status: 500,
-                statusText: "Error creating user",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-            return res;
+            if (error.code === 11000) {
+                // Duplicate key error code
+                const res = new Response(error, {
+                    status: 409,
+                    statusText: "Email already exists",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+                return res;
+            } else {
+                const res = new Response(error, {
+                    status: 500,
+                    statusText: "Error creating user",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+                return res;
+            }
         } finally {
             await client.close();
         }

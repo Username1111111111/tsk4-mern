@@ -77,6 +77,12 @@ export default function SingupForm() {
                     redirect: false,
                 })
                 redirect(`${domain}/`);
+            } else if (response.status === 409) {
+                // Email already exists
+                alert("Email already used. Choose another.");
+            } else {
+                // Other errors
+                alert("An error occurred. Please try again later.");
             }
         }
 
